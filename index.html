@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Database</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Student Database Management</h1>
+    <p>IT Development - Internship Project</p>
+  </header>
+
+  <div class="main-wrapper">
+
+    <!-- Left: add and search form -->
+    <div class="form-section">
+
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="show_tab('add-tab', this)">Add Student</button>
+        <button class="tab-btn" onclick="show_tab('search-tab', this)">Search</button>
+      </div>
+
+      <!-- Add student form -->
+      <div id="add-tab">
+        <h2>New Student</h2>
+
+        <label>Full Name</label>
+        <input type="text" id="inp-name" placeholder="ex: John Smith" />
+
+        <div class="two-cols">
+          <div>
+            <label>Age</label>
+            <input type="number" id="inp-age" placeholder="20" />
+          </div>
+          <div>
+            <label>Grade / 20</label>
+            <input type="number" id="inp-grade" placeholder="15.50" step="0.01" />
+          </div>
+        </div>
+
+        <button class="btn-blue" onclick="add_student()">Save</button>
+        <div id="msg-add" class="msg hidden"></div>
+      </div>
+
+      <!-- Search form -->
+      <div id="search-tab" class="hidden">
+        <h2>Search by ID</h2>
+
+        <label>Student ID</label>
+        <input type="number" id="inp-search" placeholder="Enter ID" />
+
+        <button class="btn-gray" onclick="search_student()">Search</button>
+
+        <div id="search-result" class="result-box hidden"></div>
+        <div id="msg-search" class="msg hidden"></div>
+      </div>
+
+    </div>
+
+    <!-- Right: records table -->
+    <div class="table-section">
+      <div class="table-top">
+        <h2>All Students</h2>
+        <span id="count-label" class="count-badge">0 records</span>
+      </div>
+
+      <table id="students-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Grade</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+
+      <div id="empty-msg" class="empty-msg">No students yet.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Mini DBMS - 1st Year IT Development - 2026</p>
+  </footer>
+
+  <script>
+
+    var students = [];
+    var next_id = 1;
+
+    function show_tab(tab_id, btn) {
+      document.getElementById('add-tab').classList.add('hidden');
+      document.getElementById('search-tab').classList.add('hidden');
+      document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      document.getElementById(tab_id).classList.remove('hidden');
+      btn.classList.add('active');
+    }
+
+    // Add a student to the list
+    function add_student() {
+      var name  = document.getElementById('inp-name').value.trim();
+      var age   = parseInt(document.getElementById('inp-age').value);
+      var grade = parseFloat(document.getElementById('inp-grade').value);
+
+      if (name == '') {
+        show_msg('msg-add', 'error', 'Please enter a name.');
+        return;
+      }
+      if (isNaN(age) || age < 15 || age > 60) {
+        show_msg('msg-add', 'error', 'Age must be between 15 and 60.');
+        return;
+      }
+      if (isNaN(grade) || grade < 0 || grade > 20) {
+        show_msg('msg-add', 'error', 'Grade must be between 0 and 20.');
+        return;
+      }
+
+      var student = { id: next_id, name: name, age: age, grade: grade.toFixed(2) };
+      students.push(student);
+      next_id++;
+
+      render_table();
+      document.getElementById('inp-name').value  = '';
+      document.getElementById('inp-age').value   = '';
+      document.getElementById('inp-grade').value = '';
+      show_msg('msg-add', 'success', 'Student added! ID: ' + student.id);
+    }
+
+    // Delete a student by ID
+    function delete_student(id) {
+      students = students.filter(function(s) { return s.id !== id; });
+      render_table();
+    }
+
+    // Search a student by ID
+    function search_student() {
+      var sid = parseInt(document.getElementById('inp-search').value);
+      if (isNaN(sid)) {
+        show_msg('msg-search', 'error', 'Please enter a valid ID.');
+        return;
+      }
+
+      var found = null;
+      for (var i = 0; i < students.length; i++) {
+        if (students[i].id === sid) { found = students[i]; break; }
+      }
+
+      var box = document.getElementById('search-result');
+      if (found) {
+        box.innerHTML = '<p><b>ID:</b> ' + found.id + '</p>' +
+                        '<p><b>Name:</b> ' + found.name + '</p>' +
+                        '<p><b>Age:</b> ' + found.age + '</p>' +
+                        '<p><b>Grade:</b> ' + found.grade + ' / 20</p>';
+        box.classList.remove('hidden');
+        document.getElementById('msg-search').classList.add('hidden');
+      } else {
+        box.classList.add('hidden');
+        show_msg('msg-search', 'error', 'No student with ID ' + sid);
+      }
+    }
+
+    // Refresh the table display
+    function render_table() {
+      var tbody = document.getElementById('table-body');
+      var empty = document.getElementById('empty-msg');
+      tbody.innerHTML = '';
+
+      if (students.length == 0) {
+        empty.style.display = 'block';
+        document.getElementById('count-label').textContent = '0 records';
+        return;
+      }
+
+      empty.style.display = 'none';
+      document.getElementById('count-label').textContent = students.length + ' record(s)';
+
+      for (var i = 0; i < students.length; i++) {
+        var s = students[i];
+        var grade_class = s.grade >= 14 ? 'good' : (s.grade >= 10 ? 'avg' : 'bad');
+        var row = document.createElement('tr');
+        row.innerHTML =
+          '<td>' + s.id + '</td>' +
+          '<td>' + s.name + '</td>' +
+          '<td>' + s.age + '</td>' +
+          '<td><span class="grade ' + grade_class + '">' + s.grade + '</span></td>' +
+          '<td><button class="btn-del" onclick="delete_student(' + s.id + ')">Delete</button></td>';
+        tbody.appendChild(row);
+      }
+    }
+
+    function show_msg(id, type, text) {
+      var el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + type;
+    }
+
+    render_table();
+
+  </script>
+</body>
+</html>
