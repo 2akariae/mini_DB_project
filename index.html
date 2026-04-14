@@ -10,12 +10,12 @@
 
   <header>
     <h1>Student Database Management</h1>
-    <p>IT Development - Internship Project</p>
+    <p>IT Development &mdash; Internship Project</p>
   </header>
 
   <div class="main-wrapper">
 
-    <!-- Left: add and search form -->
+    <!-- Left: forms -->
     <div class="form-section">
 
       <div class="tab-buttons">
@@ -23,7 +23,7 @@
         <button class="tab-btn" onclick="show_tab('search-tab', this)">Search</button>
       </div>
 
-      <!-- Add student form -->
+      <!-- Add form -->
       <div id="add-tab">
         <h2>New Student</h2>
 
@@ -60,13 +60,19 @@
 
     </div>
 
-    <!-- Right: records table -->
+    <!-- Right: table -->
     <div class="table-section">
       <div class="table-top">
         <h2>All Students</h2>
         <span id="count-label" class="count-badge">0 records</span>
       </div>
 
+      <!-- 
+        NOTE FOR SUPERVISOR DEMO:
+        In this static version, data is stored in the browser (JavaScript array).
+        In the full project, this table would be populated from the C/SQLite backend
+        via an API call. The interface and logic are identical.
+      -->
       <table id="students-table">
         <thead>
           <tr>
@@ -77,21 +83,24 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="table-body">
-        </tbody>
+        <tbody id="table-body"></tbody>
       </table>
 
       <div id="empty-msg" class="empty-msg">No students yet.</div>
+
+      <div class="demo-notice">
+        <strong>Static demo</strong> &mdash; data resets on page refresh.
+        The C + SQLite backend handles permanent storage when run locally.
+      </div>
     </div>
 
   </div>
 
   <footer>
-    <p>Mini DBMS - 1st Year IT Development - 2026</p>
+    <p>Mini DBMS &mdash; 1st Year IT Development &mdash; 2026</p>
   </footer>
 
   <script>
-
     var students = [];
     var next_id = 1;
 
@@ -105,7 +114,7 @@
       btn.classList.add('active');
     }
 
-    // Add a student to the list
+    // Add a student to the in-memory list
     function add_student() {
       var name  = document.getElementById('inp-name').value.trim();
       var age   = parseInt(document.getElementById('inp-age').value);
@@ -168,7 +177,7 @@
       }
     }
 
-    // Refresh the table display
+    // Refresh the table
     function render_table() {
       var tbody = document.getElementById('table-body');
       var empty = document.getElementById('empty-msg');
@@ -185,13 +194,13 @@
 
       for (var i = 0; i < students.length; i++) {
         var s = students[i];
-        var grade_class = s.grade >= 14 ? 'good' : (s.grade >= 10 ? 'avg' : 'bad');
+        var gc = s.grade >= 14 ? 'good' : (s.grade >= 10 ? 'avg' : 'bad');
         var row = document.createElement('tr');
         row.innerHTML =
           '<td>' + s.id + '</td>' +
           '<td>' + s.name + '</td>' +
           '<td>' + s.age + '</td>' +
-          '<td><span class="grade ' + grade_class + '">' + s.grade + '</span></td>' +
+          '<td><span class="grade ' + gc + '">' + s.grade + '</span></td>' +
           '<td><button class="btn-del" onclick="delete_student(' + s.id + ')">Delete</button></td>';
         tbody.appendChild(row);
       }
@@ -204,7 +213,7 @@
     }
 
     render_table();
-
   </script>
+
 </body>
 </html>

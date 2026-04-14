@@ -49,7 +49,7 @@ header p {
   }
 }
 
-/* White card panels */
+/* White panels */
 .form-section,
 .table-section {
   background: #ffffff;
@@ -59,7 +59,7 @@ header p {
   border: 1px solid #dde1e7;
 }
 
-/* Tab buttons */
+/* Tabs */
 .tab-buttons {
   display: flex;
   background: #f0f2f5;
@@ -146,9 +146,7 @@ input:focus {
   cursor: pointer;
 }
 
-.btn-blue:hover {
-  background: #1447c0;
-}
+.btn-blue:hover { background: #1447c0; }
 
 .btn-gray {
   width: 100%;
@@ -163,11 +161,9 @@ input:focus {
   cursor: pointer;
 }
 
-.btn-gray:hover {
-  background: #374151;
-}
+.btn-gray:hover { background: #374151; }
 
-/* Notification messages */
+/* Messages */
 .msg {
   margin-top: 12px;
   padding: 9px 12px;
@@ -176,9 +172,7 @@ input:focus {
   font-weight: 500;
 }
 
-.msg.hidden {
-  display: none;
-}
+.msg.hidden { display: none; }
 
 .msg.success {
   background: #dcfce7;
@@ -192,7 +186,7 @@ input:focus {
   border: 1px solid #fca5a5;
 }
 
-/* Search result box */
+/* Search result */
 .result-box {
   margin-top: 16px;
   padding: 14px;
@@ -203,15 +197,10 @@ input:focus {
   line-height: 1.8;
 }
 
-.result-box.hidden {
-  display: none;
-}
+.result-box.hidden { display: none; }
+.hidden { display: none; }
 
-.hidden {
-  display: none;
-}
-
-/* Table header */
+/* Table header row */
 .table-top {
   display: flex;
   align-items: center;
@@ -235,9 +224,7 @@ table {
   font-size: 0.9rem;
 }
 
-thead tr {
-  background: #f1f5f9;
-}
+thead tr { background: #f1f5f9; }
 
 th {
   text-align: left;
@@ -254,11 +241,9 @@ td {
   border-bottom: 1px solid #f1f5f9;
 }
 
-tbody tr:hover {
-  background: #f8fafc;
-}
+tbody tr:hover { background: #f8fafc; }
 
-/* Grade color badges */
+/* Grade pills */
 .grade {
   padding: 3px 10px;
   border-radius: 20px;
@@ -287,12 +272,23 @@ tbody tr:hover {
   color: white;
 }
 
-/* Empty table message */
+/* Empty state */
 .empty-msg {
   text-align: center;
   padding: 36px;
   color: #888;
   font-size: 0.92rem;
+}
+
+/* Demo notice banner */
+.demo-notice {
+  margin-top: 18px;
+  padding: 10px 14px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 6px;
+  font-size: 0.83rem;
+  color: #92400e;
 }
 
 /* Footer */
