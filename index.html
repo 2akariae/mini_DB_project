@@ -8,101 +8,204 @@
 </head>
 <body>
 
-  <header>
-    <h1>Student Database Management</h1>
-    <p>IT Development &mdash; Internship Project</p>
-  </header>
+  <!-- ===================== LOGIN PAGE ===================== -->
+  <div id="login-page">
+    <div class="login-card">
+      <div class="login-logo">&#127891;</div>
+      <h1 class="login-title">Student Database</h1>
+      <p class="login-sub">IT Development &mdash; Internship Project</p>
 
-  <div class="main-wrapper">
+      <div class="login-form">
+        <label>Username</label>
+        <input type="text" id="inp-user" placeholder="admin" />
 
-    <!-- Left: forms -->
-    <div class="form-section">
+        <label>Password</label>
+        <input type="password" id="inp-pass" placeholder="••••••" />
 
-      <div class="tab-buttons">
-        <button class="tab-btn active" onclick="show_tab('add-tab', this)">Add Student</button>
-        <button class="tab-btn" onclick="show_tab('search-tab', this)">Search</button>
-      </div>
+        <div id="login-error" class="login-error hidden">Wrong username or password.</div>
 
-      <!-- Add form -->
-      <div id="add-tab">
-        <h2>New Student</h2>
-
-        <label>Full Name</label>
-        <input type="text" id="inp-name" placeholder="ex: John Smith" />
-
-        <div class="two-cols">
-          <div>
-            <label>Age</label>
-            <input type="number" id="inp-age" placeholder="20" />
-          </div>
-          <div>
-            <label>Grade / 20</label>
-            <input type="number" id="inp-grade" placeholder="15.50" step="0.01" />
-          </div>
-        </div>
-
-        <button class="btn-blue" onclick="add_student()">Save</button>
-        <div id="msg-add" class="msg hidden"></div>
-      </div>
-
-      <!-- Search form -->
-      <div id="search-tab" class="hidden">
-        <h2>Search by ID</h2>
-
-        <label>Student ID</label>
-        <input type="number" id="inp-search" placeholder="Enter ID" />
-
-        <button class="btn-gray" onclick="search_student()">Search</button>
-
-        <div id="search-result" class="result-box hidden"></div>
-        <div id="msg-search" class="msg hidden"></div>
-      </div>
-
-    </div>
-
-    <!-- Right: table -->
-    <div class="table-section">
-      <div class="table-top">
-        <h2>All Students</h2>
-        <span id="count-label" class="count-badge">0 records</span>
-      </div>
-
-      <!-- 
-        NOTE FOR SUPERVISOR DEMO:
-        In this static version, data is stored in the browser (JavaScript array).
-        In the full project, this table would be populated from the C/SQLite backend
-        via an API call. The interface and logic are identical.
-      -->
-      <table id="students-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Grade</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
-
-      <div id="empty-msg" class="empty-msg">No students yet.</div>
-
-      <div class="demo-notice">
-        <strong>Static demo</strong> &mdash; data resets on page refresh.
-        The C + SQLite backend handles permanent storage when run locally.
+        <button class="btn-blue" onclick="do_login()">Login</button>
       </div>
     </div>
-
   </div>
 
-  <footer>
-    <p>Mini DBMS &mdash; 1st Year IT Development &mdash; 2026</p>
-  </footer>
+  <!-- ===================== DASHBOARD (hidden until login) ===================== -->
+  <div id="dashboard" class="hidden">
 
+    <header>
+      <div class="header-inner">
+        <div>
+          <h1>Student Database Management</h1>
+          <p>IT Development &mdash; Internship Project</p>
+        </div>
+        <button class="btn-logout" onclick="do_logout()">&#x2192; Logout</button>
+      </div>
+    </header>
+
+    <div class="main-wrapper">
+
+      <!-- Left: forms -->
+      <div class="form-section">
+
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="show_tab('add-tab', this)">Add Student</button>
+          <button class="tab-btn" onclick="show_tab('search-tab', this)">Search</button>
+        </div>
+
+        <!-- Add form -->
+        <div id="add-tab">
+          <h2>New Student</h2>
+
+          <label>Full Name</label>
+          <input type="text" id="inp-name" placeholder="ex: John Smith" />
+
+          <div class="two-cols">
+            <div>
+              <label>Age</label>
+              <input type="number" id="inp-age" placeholder="20" />
+            </div>
+            <div>
+              <label>Grade / 20</label>
+              <input type="number" id="inp-grade" placeholder="15.50" step="0.01" />
+            </div>
+          </div>
+
+          <button class="btn-blue" onclick="add_student()">Save</button>
+          <div id="msg-add" class="msg hidden"></div>
+        </div>
+
+        <!-- Search form -->
+        <div id="search-tab" class="hidden">
+          <h2>Search by ID</h2>
+
+          <label>Student ID</label>
+          <input type="number" id="inp-search" placeholder="Enter ID" />
+
+          <button class="btn-gray" onclick="search_student()">Search</button>
+
+          <div id="search-result" class="result-box hidden"></div>
+          <div id="msg-search" class="msg hidden"></div>
+        </div>
+
+      </div>
+
+      <!-- Right: table -->
+      <div class="table-section">
+        <div class="table-top">
+          <h2>All Students</h2>
+          <span id="count-label" class="count-badge">0 records</span>
+        </div>
+
+        <table id="students-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Grade</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+
+        <div id="empty-msg" class="empty-msg">No students yet.</div>
+
+        <div class="demo-notice">
+          <strong>Static demo</strong> &mdash; data resets on page refresh.
+          The C + SQLite backend handles permanent storage when run locally.
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <p>Mini DBMS &mdash; 1st Year IT Development &mdash; 2026</p>
+    </footer>
+
+  </div><!-- end #dashboard -->
+
+
+  <!-- ===================== EDIT MODAL ===================== -->
+  <!--
+    This modal corresponds to the modifyStudent() function in the C backend.
+    When the user clicks Edit, the form is pre-filled with the student's data.
+    On Save, it calls modify_student() which updates the record in the array.
+  -->
+  <div id="modal-overlay" class="modal-overlay hidden" onclick="close_modal(event)">
+    <div class="modal-card">
+
+      <div class="modal-header">
+        <h2>Edit Student</h2>
+        <button class="modal-close" onclick="close_modal_btn()">&#x2715;</button>
+      </div>
+
+      <p class="modal-id-label">Editing ID: <strong id="modal-student-id"></strong></p>
+
+      <label>Full Name</label>
+      <input type="text" id="modal-name" placeholder="Full name" />
+
+      <div class="two-cols">
+        <div>
+          <label>Age</label>
+          <input type="number" id="modal-age" placeholder="20" />
+        </div>
+        <div>
+          <label>Grade / 20</label>
+          <input type="number" id="modal-grade" placeholder="15.50" step="0.01" />
+        </div>
+      </div>
+
+      <div id="msg-modal" class="msg hidden"></div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="close_modal_btn()">Cancel</button>
+        <button class="btn-blue modal-save-btn" onclick="modify_student()">Save Changes</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ===================== JAVASCRIPT ===================== -->
   <script>
+
     var students = [];
-    var next_id = 1;
+    var next_id  = 1;
+
+    // Hardcoded credentials - in a real project these would be checked server-side
+    var ADMIN_USER = "admin";
+    var ADMIN_PASS = "1234";
+
+    // ---- LOGIN / LOGOUT ----
+
+    function do_login() {
+      var user = document.getElementById('inp-user').value.trim();
+      var pass = document.getElementById('inp-pass').value;
+
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        document.getElementById('login-error').classList.add('hidden');
+      } else {
+        document.getElementById('login-error').classList.remove('hidden');
+      }
+    }
+
+    function do_logout() {
+      document.getElementById('dashboard').classList.add('hidden');
+      document.getElementById('login-page').classList.remove('hidden');
+      document.getElementById('inp-user').value = '';
+      document.getElementById('inp-pass').value = '';
+    }
+
+    // Allow pressing Enter on password field to login
+    document.getElementById('inp-pass').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') do_login();
+    });
+
+
+    // ---- TABS ----
 
     function show_tab(tab_id, btn) {
       document.getElementById('add-tab').classList.add('hidden');
@@ -114,7 +217,9 @@
       btn.classList.add('active');
     }
 
-    // Add a student to the in-memory list
+
+    // ---- ADD STUDENT (corresponds to addStudent() in C) ----
+
     function add_student() {
       var name  = document.getElementById('inp-name').value.trim();
       var age   = parseInt(document.getElementById('inp-age').value);
@@ -144,13 +249,9 @@
       show_msg('msg-add', 'success', 'Student added! ID: ' + student.id);
     }
 
-    // Delete a student by ID
-    function delete_student(id) {
-      students = students.filter(function(s) { return s.id !== id; });
-      render_table();
-    }
 
-    // Search a student by ID
+    // ---- SEARCH STUDENT (corresponds to searchStudent() in C) ----
+
     function search_student() {
       var sid = parseInt(document.getElementById('inp-search').value);
       if (isNaN(sid)) {
@@ -165,10 +266,10 @@
 
       var box = document.getElementById('search-result');
       if (found) {
-        box.innerHTML = '<p><b>ID:</b> ' + found.id + '</p>' +
-                        '<p><b>Name:</b> ' + found.name + '</p>' +
-                        '<p><b>Age:</b> ' + found.age + '</p>' +
-                        '<p><b>Grade:</b> ' + found.grade + ' / 20</p>';
+        box.innerHTML = '<p><b>ID:</b> '     + found.id    + '</p>' +
+                        '<p><b>Name:</b> '   + found.name  + '</p>' +
+                        '<p><b>Age:</b> '    + found.age   + '</p>' +
+                        '<p><b>Grade:</b> '  + found.grade + ' / 20</p>';
         box.classList.remove('hidden');
         document.getElementById('msg-search').classList.add('hidden');
       } else {
@@ -177,7 +278,93 @@
       }
     }
 
-    // Refresh the table
+
+    // ---- DELETE STUDENT (corresponds to deleteStudent() in C) ----
+
+    function delete_student(id) {
+      students = students.filter(function(s) { return s.id !== id; });
+      render_table();
+    }
+
+
+    // ---- OPEN EDIT MODAL ----
+    // Pre-fills the modal form with the student's current data
+
+    function open_edit_modal(id) {
+      var found = null;
+      for (var i = 0; i < students.length; i++) {
+        if (students[i].id === id) { found = students[i]; break; }
+      }
+      if (!found) return;
+
+      document.getElementById('modal-student-id').textContent = found.id;
+      document.getElementById('modal-name').value  = found.name;
+      document.getElementById('modal-age').value   = found.age;
+      document.getElementById('modal-grade').value = found.grade;
+      document.getElementById('msg-modal').className = 'msg hidden';
+
+      document.getElementById('modal-overlay').classList.remove('hidden');
+    }
+
+
+    // ---- MODIFY STUDENT (corresponds to modifyStudent() in C) ----
+    // Updates the student record - same logic as the C function
+
+    function modify_student() {
+      var sid   = parseInt(document.getElementById('modal-student-id').textContent);
+      var name  = document.getElementById('modal-name').value.trim();
+      var age   = parseInt(document.getElementById('modal-age').value);
+      var grade = parseFloat(document.getElementById('modal-grade').value);
+
+      if (name == '') {
+        show_msg('msg-modal', 'error', 'Name cannot be empty.');
+        return;
+      }
+      if (isNaN(age) || age < 15 || age > 60) {
+        show_msg('msg-modal', 'error', 'Age must be between 15 and 60.');
+        return;
+      }
+      if (isNaN(grade) || grade < 0 || grade > 20) {
+        show_msg('msg-modal', 'error', 'Grade must be between 0 and 20.');
+        return;
+      }
+
+      // Find the student in the array and update their data
+      for (var i = 0; i < students.length; i++) {
+        if (students[i].id === sid) {
+          students[i].name  = name;
+          students[i].age   = age;
+          students[i].grade = grade.toFixed(2);
+          break;
+        }
+      }
+
+      render_table();
+      show_msg('msg-modal', 'success', 'Student updated successfully!');
+
+      // Close modal after short delay
+      setTimeout(function() {
+        close_modal_btn();
+      }, 900);
+    }
+
+
+    // ---- MODAL CLOSE ----
+
+    function close_modal_btn() {
+      document.getElementById('modal-overlay').classList.add('hidden');
+    }
+
+    // Close if user clicks outside the modal card
+    function close_modal(event) {
+      if (event.target.id === 'modal-overlay') {
+        close_modal_btn();
+      }
+    }
+
+
+    // ---- RENDER TABLE ----
+
     function render_table() {
       var tbody = document.getElementById('table-body');
       var empty = document.getElementById('empty-msg');
@@ -193,7 +380,7 @@
       document.getElementById('count-label').textContent = students.length + ' record(s)';
 
       for (var i = 0; i < students.length; i++) {
-        var s = students[i];
+        var s  = students[i];
         var gc = s.grade >= 14 ? 'good' : (s.grade >= 10 ? 'avg' : 'bad');
         var row = document.createElement('tr');
         row.innerHTML =
@@ -201,10 +388,16 @@
           '<td>' + s.name + '</td>' +
           '<td>' + s.age + '</td>' +
           '<td><span class="grade ' + gc + '">' + s.grade + '</span></td>' +
-          '<td><button class="btn-del" onclick="delete_student(' + s.id + ')">Delete</button></td>';
+          '<td class="action-btns">' +
+            '<button class="btn-edit" onclick="open_edit_modal(' + s.id + ')">&#9998; Edit</button>' +
+            '<button class="btn-del"  onclick="delete_student('  + s.id + ')">&#128465; Delete</button>' +
+          '</td>';
         tbody.appendChild(row);
       }
     }
+
+
+    // ---- HELPER ----
 
     function show_msg(id, type, text) {
       var el = document.getElementById(id);
@@ -213,6 +406,7 @@
     }
 
     render_table();
+
   </script>
 
 </body>

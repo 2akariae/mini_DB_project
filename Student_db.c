@@ -6,7 +6,7 @@
 // Global database connection
 sqlite3 *db;
 
-// Open the database and create the table if it does not exist
+// Open database and create table if it does not exist
 void init_db()
 {
     int rc = sqlite3_open("students.db", &db);
@@ -49,7 +49,6 @@ void add_student()
     scanf("%f", &grade);
     getchar();
 
-    // Build the INSERT query using a prepared statement
     sqlite3_stmt *stmt;
     char *sql = "INSERT INTO students (name, age, grade) VALUES (?, ?, ?);";
 
@@ -60,13 +59,10 @@ void add_student()
 
     int rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE)
-    {
         printf("Student added! ID = %lld\n", sqlite3_last_insert_rowid(db));
-    }
     else
-    {
-        printf("Error adding student: %s\n", sqlite3_errmsg(db));
-    }
+        printf("Error: %s\n", sqlite3_errmsg(db));
+
     sqlite3_finalize(stmt);
 }
 
@@ -126,6 +122,62 @@ void search_student()
     sqlite3_finalize(stmt);
 }
 
+// Modify an existing student (UPDATE query)
+void modify_student()
+{
+    int sid;
+    printf("Enter student ID to modify: ");
+    scanf("%d", &sid);
+    getchar();
+
+    // First check if the student exists
+    sqlite3_stmt *check;
+    sqlite3_prepare_v2(db, "SELECT id FROM students WHERE id = ?;", -1, &check, NULL);
+    sqlite3_bind_int(check, 1, sid);
+
+    if (sqlite3_step(check) != SQLITE_ROW)
+    {
+        printf("Student with ID %d not found.\n", sid);
+        sqlite3_finalize(check);
+        return;
+    }
+    sqlite3_finalize(check);
+
+    // Read new values
+    char name[50];
+    int age;
+    float grade;
+
+    printf("New name: ");
+    fgets(name, 50, stdin);
+    name[strcspn(name, "\n")] = '\0';
+
+    printf("New age: ");
+    scanf("%d", &age);
+
+    printf("New grade: ");
+    scanf("%f", &grade);
+    getchar();
+
+    // Run the UPDATE query
+    sqlite3_stmt *stmt;
+    char *sql = "UPDATE students SET name = ?, age = ?, grade = ? WHERE id = ?;";
+
+    sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, age);
+    sqlite3_bind_double(stmt, 3, grade);
+    sqlite3_bind_int(stmt, 4, sid);
+
+    int rc = sqlite3_step(stmt);
+    if (rc == SQLITE_DONE)
+        printf("Student %d updated successfully.\n", sid);
+    else
+        printf("Error: %s\n", sqlite3_errmsg(db));
+
+    sqlite3_finalize(stmt);
+}
+
 // Delete a student by ID
 void delete_student()
 {
@@ -143,15 +195,14 @@ void delete_student()
     int rc = sqlite3_step(stmt);
     if (rc == SQLITE_DONE)
     {
-        int rows = sqlite3_changes(db);
-        if (rows > 0)
+        if (sqlite3_changes(db) > 0)
             printf("Student %d deleted.\n", sid);
         else
             printf("Student with ID %d not found.\n", sid);
     }
     else
     {
-        printf("Error deleting student: %s\n", sqlite3_errmsg(db));
+        printf("Error: %s\n", sqlite3_errmsg(db));
     }
     sqlite3_finalize(stmt);
 }
@@ -169,8 +220,9 @@ int main()
         printf("\n1. Add student\n");
         printf("2. View all\n");
         printf("3. Search by ID\n");
-        printf("4. Delete student\n");
-        printf("5. Exit\n");
+        printf("4. Modify student\n");
+        printf("5. Delete student\n");
+        printf("6. Exit\n");
         printf("Choice: ");
         scanf("%d", &choice);
         getchar();
@@ -182,13 +234,15 @@ int main()
         else if (choice == 3)
             search_student();
         else if (choice == 4)
-            delete_student();
+            modify_student();
         else if (choice == 5)
+            delete_student();
+        else if (choice == 6)
             printf("Goodbye!\n");
         else
             printf("Invalid choice.\n");
 
-    } while (choice != 5);
+    } while (choice != 6);
 
     sqlite3_close(db);
     return 0;

@@ -14,25 +14,133 @@ body {
   flex-direction: column;
 }
 
-/* Header */
+
+/* ===================== LOGIN PAGE ===================== */
+
+#login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  border: 1px solid #dde1e7;
+  text-align: center;
+}
+
+.login-logo {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.login-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 28px;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.login-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 14px;
+  color: #333;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #cdd1d8;
+  border-radius: 5px;
+  font-size: 0.93rem;
+  background: #f8f9fb;
+  outline: none;
+}
+
+.login-form input:focus {
+  border-color: #1a56db;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+}
+
+.login-error {
+  margin-top: 12px;
+  padding: 9px 12px;
+  border-radius: 5px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+
+/* ===================== HEADER ===================== */
+
 header {
   background: #1a56db;
   color: white;
-  padding: 18px 30px;
+  padding: 16px 30px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 header h1 {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: bold;
 }
 
 header p {
-  font-size: 0.85rem;
-  margin-top: 4px;
+  font-size: 0.82rem;
+  margin-top: 3px;
   opacity: 0.85;
 }
 
-/* Main layout */
+.btn-logout {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 7px 16px;
+  border-radius: 5px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-logout:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+
+/* ===================== MAIN LAYOUT ===================== */
+
 .main-wrapper {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -49,17 +157,18 @@ header p {
   }
 }
 
-/* White panels */
 .form-section,
 .table-section {
-  background: #ffffff;
+  background: #fff;
   border-radius: 8px;
   padding: 22px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   border: 1px solid #dde1e7;
 }
 
-/* Tabs */
+
+/* ===================== TABS ===================== */
+
 .tab-buttons {
   display: flex;
   background: #f0f2f5;
@@ -92,7 +201,9 @@ header p {
   background: #e2e6ea;
 }
 
-/* Form elements */
+
+/* ===================== FORM ELEMENTS ===================== */
+
 h2 {
   font-size: 1rem;
   margin-bottom: 16px;
@@ -109,7 +220,8 @@ label {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+input[type="password"] {
   width: 100%;
   padding: 9px 11px;
   border: 1.5px solid #cdd1d8;
@@ -132,7 +244,9 @@ input:focus {
   gap: 12px;
 }
 
-/* Buttons */
+
+/* ===================== BUTTONS ===================== */
+
 .btn-blue {
   width: 100%;
   margin-top: 16px;
@@ -163,7 +277,9 @@ input:focus {
 
 .btn-gray:hover { background: #374151; }
 
-/* Messages */
+
+/* ===================== MESSAGES ===================== */
+
 .msg {
   margin-top: 12px;
   padding: 9px 12px;
@@ -186,7 +302,6 @@ input:focus {
   border: 1px solid #fca5a5;
 }
 
-/* Search result */
 .result-box {
   margin-top: 16px;
   padding: 14px;
@@ -200,7 +315,9 @@ input:focus {
 .result-box.hidden { display: none; }
 .hidden { display: none; }
 
-/* Table header row */
+
+/* ===================== TABLE SECTION ===================== */
+
 .table-top {
   display: flex;
   align-items: center;
@@ -217,7 +334,6 @@ input:focus {
   font-weight: 600;
 }
 
-/* Table */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -243,7 +359,6 @@ td {
 
 tbody tr:hover { background: #f8fafc; }
 
-/* Grade pills */
 .grade {
   padding: 3px 10px;
   border-radius: 20px;
@@ -255,7 +370,28 @@ tbody tr:hover { background: #f8fafc; }
 .grade.avg  { background: #fef08a; color: #713f12; }
 .grade.bad  { background: #fecaca; color: #7f1d1d; }
 
-/* Delete button */
+.action-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.btn-edit {
+  padding: 4px 10px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #1d4ed8;
+  color: white;
+}
+
 .btn-del {
   padding: 4px 10px;
   background: #fee2e2;
@@ -272,7 +408,6 @@ tbody tr:hover { background: #f8fafc; }
   color: white;
 }
 
-/* Empty state */
 .empty-msg {
   text-align: center;
   padding: 36px;
@@ -280,7 +415,6 @@ tbody tr:hover { background: #f8fafc; }
   font-size: 0.92rem;
 }
 
-/* Demo notice banner */
 .demo-notice {
   margin-top: 18px;
   padding: 10px 14px;
@@ -291,7 +425,93 @@ tbody tr:hover { background: #f8fafc; }
   color: #92400e;
 }
 
-/* Footer */
+
+/* ===================== EDIT MODAL ===================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  border: 1px solid #dde1e7;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.modal-header h2 {
+  font-size: 1.05rem;
+  margin-bottom: 0;
+  color: #1a56db;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #888;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: #333;
+}
+
+.modal-id-label {
+  font-size: 0.83rem;
+  color: #888;
+  margin-bottom: 14px;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 10px;
+  background: #f1f5f9;
+  color: #555;
+  border: 1px solid #cdd1d8;
+  border-radius: 5px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel:hover { background: #e2e8f0; }
+
+.modal-save-btn {
+  flex: 1;
+  margin-top: 0;
+}
+
+
+/* ===================== FOOTER ===================== */
+
 footer {
   text-align: center;
   padding: 14px;
